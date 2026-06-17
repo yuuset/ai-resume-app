@@ -40,29 +40,29 @@ export default function Home() {
 
           <div className="grid gap-4">
             <input
-              className="rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500"
-              placeholder="姓名，例如：龔孟謙"
+              className="rounded-xl border border-slate-300 p-3 text-black placeholder:text-slate-400 outline-none focus:border-blue-500"
+              placeholder="姓名，例如：王勝偉"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
 
             <input
-              className="rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500"
+              className="rounded-xl border border-slate-300 p-3 text-black placeholder:text-slate-400 outline-none focus:border-blue-500"
               placeholder="科系，例如：智慧自動化工程系"
               value={major}
               onChange={(e) => setMajor(e.target.value)}
             />
 
             <input
-              className="rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500"
+              className="rounded-xl border border-slate-300 p-3 text-black placeholder:text-slate-400 outline-none focus:border-blue-500"
               placeholder="技能，例如：Python、React、Oracle Cloud、Nginx"
               value={skills}
               onChange={(e) => setSkills(e.target.value)}
             />
 
             <input
-              className="rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500"
-              placeholder="專題，例如：AEM 電解槽最佳化互動展示平台"
+              className="rounded-xl border border-slate-300 p-3 text-black placeholder:text-slate-400 outline-none focus:border-blue-500"
+              placeholder="專題，例如：智慧CNC纏屑監控與自動除屑整合系統"
               value={project}
               onChange={(e) => setProject(e.target.value)}
             />
