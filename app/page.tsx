@@ -2,194 +2,238 @@
 
 import { useState } from "react";
 
+type Page = "home" | "profile" | "skills" | "project";
+
 export default function Home() {
-  const [name, setName] = useState("");
-  const [major, setMajor] = useState("");
-  const [skills, setSkills] = useState("");
-  const [project, setProject] = useState("");
-  const [result, setResult] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [page, setPage] = useState<Page>("home");
 
-  function generateResume() {
-    const resume = `【個人簡介】
-我叫 ${name || "未填姓名"}，目前就讀於 ${major || "相關科系"}。我對人工智慧、前端開發、雲端部署與專題實作具有高度興趣，並具備持續學習與解決問題的能力。
-
-【專業技能】
-我具備 ${skills || "程式設計、網頁開發、資料整理"} 等技能，能夠將課堂所學應用於實際專案中。
-
-【專題經驗】
-我曾參與或製作「${project || "AI 應用系統"}」相關專題，過程中學習到系統設計、資料處理、使用者介面設計與問題除錯能力。
-
-【未來目標】
-未來希望持續精進 AI 應用、前端開發與雲端部署能力，成為能夠整合軟體、硬體與實際應用的工程人才。`;
-
-    setResult(resume);
-    setCopied(false);
-  }
-
-  async function copyResult() {
-    if (!result) return;
-    await navigator.clipboard.writeText(result);
-    setCopied(true);
-  }
-
-  function fillExample() {
-    setName("龔孟謙");
-    setMajor("國立勤益科技大學 智慧自動化工程系");
-    setSkills("Python、React、Next.js、Oracle Cloud、Nginx、GitHub、Railway");
-    setProject("AEM 電解槽最佳化互動展示平台");
-  }
+  const navButtonClass = (target: Page) =>
+    page === target
+      ? "rounded-full bg-white px-5 py-2 text-sm font-bold text-blue-700 shadow"
+      : "rounded-full border border-white/30 px-5 py-2 text-sm font-bold text-white transition hover:bg-white/10";
 
   return (
-    <main className="min-h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-slate-900">
-      <div className="pointer-events-none fixed left-[-120px] top-[-120px] h-80 w-80 rounded-full bg-blue-500/30 blur-3xl" />
-      <div className="pointer-events-none fixed bottom-[-120px] right-[-120px] h-96 w-96 rounded-full bg-cyan-400/20 blur-3xl" />
-
-      <div className="relative mx-auto max-w-6xl px-6 py-10">
-        <nav className="mb-10 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 text-xl text-white shadow-lg backdrop-blur">
-              AI
-            </div>
-            <div>
-              <p className="text-sm text-slate-300">Next.js + GitHub + Railway</p>
-              <h1 className="text-lg font-bold text-white">AI Resume App</h1>
-            </div>
+    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 px-6 py-8 text-white">
+      <div className="mx-auto max-w-6xl">
+        {/* 導覽列 */}
+        <nav className="mb-10 flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/10 p-5 shadow-2xl backdrop-blur md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-sm text-cyan-200">Resume Website</p>
+            <h1 className="text-2xl font-black">王勝偉｜個人履歷網站</h1>
           </div>
 
-          <a
-            href="https://github.com/yuuset/ai-resume-app"
-            target="_blank"
-            className="rounded-full border border-white/20 px-5 py-2 text-sm font-medium text-white transition hover:bg-white/10"
-          >
-            GitHub
-          </a>
+          <div className="flex flex-wrap gap-3">
+            <button onClick={() => setPage("home")} className={navButtonClass("home")}>
+              首頁
+            </button>
+            <button onClick={() => setPage("profile")} className={navButtonClass("profile")}>
+              個人資料
+            </button>
+            <button onClick={() => setPage("skills")} className={navButtonClass("skills")}>
+              專長能力
+            </button>
+            <button onClick={() => setPage("project")} className={navButtonClass("project")}>
+              專題介紹
+            </button>
+          </div>
         </nav>
 
-        <section className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <div>
-            <div className="mb-5 inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-sm font-medium text-cyan-100">
-              期末專案｜AI 履歷產生器
+        {/* 首頁 */}
+        {page === "home" && (
+          <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="rounded-[2rem] border border-white/10 bg-white/10 p-10 shadow-2xl backdrop-blur">
+              <p className="mb-4 inline-block rounded-full bg-cyan-400/20 px-4 py-2 text-sm font-bold text-cyan-100">
+                智慧自動化工程系｜專題成果展示
+              </p>
+
+              <h2 className="text-5xl font-black leading-tight md:text-6xl">
+                王勝偉
+                <span className="block bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+                  個人履歷網站
+                </span>
+              </h2>
+
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+                我目前就讀於智慧自動化工程系，具備 Python、YOLO 影像辨識與網頁設計能力。
+                本網站用於展示個人基本資料、專業技能與專題作品。
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-4">
+                <button
+                  onClick={() => setPage("profile")}
+                  className="rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3 font-black text-white shadow-lg shadow-blue-500/30 transition hover:scale-105"
+                >
+                  查看個人資料
+                </button>
+
+                <button
+                  onClick={() => setPage("project")}
+                  className="rounded-2xl border border-white/30 px-6 py-3 font-black text-white transition hover:bg-white/10"
+                >
+                  查看專題作品
+                </button>
+              </div>
             </div>
 
-            <h2 className="text-4xl font-black leading-tight text-white md:text-6xl">
-              用幾個欄位，
-              <span className="block bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
-                快速產生履歷草稿
-              </span>
-            </h2>
+            <div className="rounded-[2rem] border border-white/10 bg-white p-8 text-slate-900 shadow-2xl">
+              <p className="text-sm font-bold text-blue-600">Personal Card</p>
+              <h3 className="mt-2 text-3xl font-black">王勝偉</h3>
+              <p className="mt-2 text-slate-600">智慧自動化工程系</p>
 
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              輸入姓名、科系、專業技能與專題經驗後，系統會自動整理成一份可複製、可修改的履歷文字，
-              適合用於課堂展示、求職準備與作品集整理。
-            </p>
+              <div className="mt-6 grid gap-4">
+                <div className="rounded-2xl bg-slate-100 p-5">
+                  <p className="text-sm font-bold text-slate-500">專長</p>
+                  <p className="mt-1 text-lg font-bold">Python、YOLO、網頁設計</p>
+                </div>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-3xl border border-white/10 bg-white/10 p-5 text-white backdrop-blur">
-                <p className="text-3xl font-black">01</p>
-                <p className="mt-2 text-sm text-slate-300">輸入資料</p>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-white/10 p-5 text-white backdrop-blur">
-                <p className="text-3xl font-black">02</p>
-                <p className="mt-2 text-sm text-slate-300">自動生成</p>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-white/10 p-5 text-white backdrop-blur">
-                <p className="text-3xl font-black">03</p>
-                <p className="mt-2 text-sm text-slate-300">複製使用</p>
+                <div className="rounded-2xl bg-slate-100 p-5">
+                  <p className="text-sm font-bold text-slate-500">專題</p>
+                  <p className="mt-1 text-lg font-bold">
+                    智慧 CNC 纏屑監控與自動除屑整合系統
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="rounded-[2rem] border border-white/20 bg-white/95 p-6 shadow-2xl backdrop-blur">
-            <div className="mb-6 flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-blue-600">Resume Generator</p>
-                <h3 className="text-2xl font-black text-slate-900">輸入資料</h3>
-              </div>
-
-              <button
-                onClick={fillExample}
-                className="rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-200"
-              >
-                填入範例
-              </button>
-            </div>
-
-            <div className="grid gap-4">
-              <label className="grid gap-2">
-                <span className="text-sm font-bold text-slate-700">姓名</span>
-                <input
-                  className="rounded-2xl border border-slate-300 bg-white p-4 text-black placeholder:text-slate-400 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  placeholder="例如：王勝偉"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </label>
-
-              <label className="grid gap-2">
-                <span className="text-sm font-bold text-slate-700">科系 / 學校</span>
-                <input
-                  className="rounded-2xl border border-slate-300 bg-white p-4 text-black placeholder:text-slate-400 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  placeholder="例如：智慧自動化工程系"
-                  value={major}
-                  onChange={(e) => setMajor(e.target.value)}
-                />
-              </label>
-
-              <label className="grid gap-2">
-                <span className="text-sm font-bold text-slate-700">專業技能</span>
-                <textarea
-                  className="min-h-24 rounded-2xl border border-slate-300 bg-white p-4 text-black placeholder:text-slate-400 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  placeholder="例如：Python、React、Oracle Cloud、Nginx"
-                  value={skills}
-                  onChange={(e) => setSkills(e.target.value)}
-                />
-              </label>
-
-              <label className="grid gap-2">
-                <span className="text-sm font-bold text-slate-700">專題作品</span>
-                <input
-                  className="rounded-2xl border border-slate-300 bg-white p-4 text-black placeholder:text-slate-400 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                  placeholder="例如：智慧CNC纏屑監控與自動除屑整合系統"
-                  value={project}
-                  onChange={(e) => setProject(e.target.value)}
-                />
-              </label>
-
-              <button
-                onClick={generateResume}
-                className="mt-2 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 p-4 font-black text-white shadow-lg shadow-blue-500/30 transition hover:scale-[1.01] hover:shadow-xl"
-              >
-                產生履歷
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {result && (
-          <section className="mt-10 rounded-[2rem] border border-white/20 bg-white p-8 shadow-2xl">
-            <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm font-bold text-blue-600">Generated Resume</p>
-                <h3 className="text-3xl font-black text-slate-900">產生結果</h3>
-              </div>
-
-              <button
-                onClick={copyResult}
-                className="rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-slate-700"
-              >
-                {copied ? "已複製" : "複製履歷內容"}
-              </button>
-            </div>
-
-            <pre className="whitespace-pre-wrap rounded-3xl border border-slate-200 bg-slate-50 p-6 leading-8 text-slate-800">
-              {result}
-            </pre>
           </section>
         )}
 
-        <footer className="mt-12 text-center text-sm text-slate-400">
-          © 2026 AI Resume App｜Designed with Next.js, Tailwind CSS, GitHub and Railway
+        {/* 個人資料 */}
+        {page === "profile" && (
+          <section className="rounded-[2rem] bg-white p-8 text-slate-900 shadow-2xl">
+            <p className="text-sm font-bold text-blue-600">Profile</p>
+            <h2 className="mt-2 text-4xl font-black">個人資料</h2>
+
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              <div className="rounded-3xl bg-slate-100 p-6">
+                <p className="text-sm font-bold text-slate-500">姓名</p>
+                <p className="mt-2 text-2xl font-black">王勝偉</p>
+              </div>
+
+              <div className="rounded-3xl bg-slate-100 p-6">
+                <p className="text-sm font-bold text-slate-500">系所</p>
+                <p className="mt-2 text-2xl font-black">智慧自動化工程系</p>
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-3xl border border-slate-200 p-6">
+              <h3 className="text-2xl font-black">自我介紹</h3>
+              <p className="mt-4 leading-8 text-slate-700">
+                我是王勝偉，目前就讀於智慧自動化工程系。學習方向包含程式設計、
+                影像辨識、智慧製造與網頁設計，並希望將人工智慧技術應用於工業自動化系統中。
+                透過專題實作，我累積了影像處理、模型應用與系統整合的經驗。
+              </p>
+            </div>
+
+            <button
+              onClick={() => setPage("skills")}
+              className="mt-8 rounded-2xl bg-blue-600 px-6 py-3 font-bold text-white transition hover:bg-blue-700"
+            >
+              下一頁：專長能力
+            </button>
+          </section>
+        )}
+
+        {/* 專長能力 */}
+        {page === "skills" && (
+          <section className="rounded-[2rem] bg-white p-8 text-slate-900 shadow-2xl">
+            <p className="text-sm font-bold text-blue-600">Skills</p>
+            <h2 className="mt-2 text-4xl font-black">專長能力</h2>
+
+            <div className="mt-8 grid gap-6 md:grid-cols-3">
+              <div className="rounded-3xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-2xl font-black text-white">
+                  Py
+                </div>
+                <h3 className="text-2xl font-black">Python</h3>
+                <p className="mt-3 leading-7 text-slate-700">
+                  具備 Python 程式設計能力，可應用於資料處理、影像分析、模型訓練與自動化流程。
+                </p>
+              </div>
+
+              <div className="rounded-3xl bg-gradient-to-br from-purple-50 to-blue-50 p-6">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-600 text-xl font-black text-white">
+                  AI
+                </div>
+                <h3 className="text-2xl font-black">YOLO</h3>
+                <p className="mt-3 leading-7 text-slate-700">
+                  熟悉 YOLO 物件辨識概念，可用於即時影像監控、物件偵測與工業瑕疵辨識。
+                </p>
+              </div>
+
+              <div className="rounded-3xl bg-gradient-to-br from-cyan-50 to-emerald-50 p-6">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-600 text-xl font-black text-white">
+                  Web
+                </div>
+                <h3 className="text-2xl font-black">網頁設計</h3>
+                <p className="mt-3 leading-7 text-slate-700">
+                  能設計簡潔的網頁介面，並使用前端技術製作作品展示、履歷網站與互動式系統。
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setPage("project")}
+              className="mt-8 rounded-2xl bg-blue-600 px-6 py-3 font-bold text-white transition hover:bg-blue-700"
+            >
+              下一頁：專題介紹
+            </button>
+          </section>
+        )}
+
+        {/* 專題介紹 */}
+        {page === "project" && (
+          <section className="rounded-[2rem] bg-white p-8 text-slate-900 shadow-2xl">
+            <p className="text-sm font-bold text-blue-600">Project</p>
+            <h2 className="mt-2 text-4xl font-black">
+              智慧 CNC 纏屑監控與自動除屑整合系統
+            </h2>
+
+            <div className="mt-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+              <div className="rounded-3xl bg-slate-900 p-7 text-white">
+                <h3 className="text-2xl font-black">專題重點</h3>
+                <ul className="mt-5 space-y-4 leading-7 text-slate-300">
+                  <li>• 使用影像辨識監控 CNC 加工狀態</li>
+                  <li>• 透過 YOLO 模型偵測纏屑或異常情況</li>
+                  <li>• 結合自動除屑機構，降低人工巡檢負擔</li>
+                  <li>• 提升加工安全性、穩定性與設備維護效率</li>
+                </ul>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 p-7">
+                <h3 className="text-2xl font-black">專題說明</h3>
+                <p className="mt-4 leading-8 text-slate-700">
+                  本專題以 CNC 加工過程中的纏屑問題為研究目標，建立一套智慧監控與自動除屑整合系統。
+                  系統透過攝影機擷取加工影像，並利用 YOLO 影像辨識模型判斷是否發生纏屑狀況。
+                  當系統偵測到異常時，可進一步觸發除屑機構或提醒操作人員處理，以提升加工過程的安全性與自動化程度。
+                </p>
+
+                <p className="mt-4 leading-8 text-slate-700">
+                  此系統結合 Python、YOLO 物件辨識、網頁介面與自動化控制概念，
+                  展現智慧製造中影像辨識與設備整合的應用價值。
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <button
+                onClick={() => setPage("home")}
+                className="rounded-2xl bg-slate-900 px-6 py-3 font-bold text-white transition hover:bg-slate-700"
+              >
+                回到首頁
+              </button>
+
+              <button
+                onClick={() => setPage("profile")}
+                className="rounded-2xl border border-slate-300 px-6 py-3 font-bold text-slate-700 transition hover:bg-slate-100"
+              >
+                查看個人資料
+              </button>
+            </div>
+          </section>
+        )}
+
+        <footer className="mt-10 text-center text-sm text-slate-400">
+          © 2026 王勝偉｜智慧自動化工程系｜Next.js + GitHub + Railway
         </footer>
       </div>
     </main>
